@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+//want these functions to update automatically
+//load data from sql tables initially, then do calculations on variables
+var userId = null;
+var happiness = 0;
+var gold = 0;
+var armyNum = 4;
+var HP = 4;
+var ArmyAttack = 1;
+var EnemyAttack = 1;
+var socket = io.connect('http://178.62.18.106:8080');
+socket.on('userId_data', function(data) {
+    userId = data;
+    socket.emit('new_user', userId);
+});
+
+socket.on('new_user', function(data) {
+    console.log("*******"+data+"*******");
+    $('#users_zone').prepend('<p><strong>' + data.userName+ '</strong> joins the fight !</p>');
+    armyNum += data.army;
+    updatePage();
+});
+
+
+function updatePage() {
+  document.getElementById("ArmyNum").innerHTML = armyNum;
+  document.getElementById("HP").innerHTML = HP;
+  document.getElementById("ArmyAttack").innerHTML = ArmyAttack;
+  document.getElementById("EnemyAttack").innerHTML = EnemyAttack; 
+}
+
+
+function Fight1(){
+    armyNum = armyNum - EnemyAttack;
+    updatePage()
+  return armyNum;
+  }
+  
+function Fight2(){
+    HP = HP - armyNum;
+    updatePage()
+  return HP;
+  }
+var myvar = window.setInterval("PageMain()", 1000);
+
+function stopfunction(){
+  clearInterval(myvar);
+  }
+
+function addEnemySpoils() {
+  //look up what enemy has, add it to player database
+  //make button appear to add to database
+  document.getElementById("final").innerHTML = "You have won this and that!";
+  }
+
+function PageMain(){
+    Fight1();
+    Fight2();
+  if (HP < 0){
+    var winner = "Enemy is dead! You win";
+    //console.log("djshad");
+    document.getElementById("finalMessage").innerHTML = winner;
+    addEnemySpoils();
+    stopfunction();
+    socket.emit('send_armyNum', {userId: userId, armyNum: armyNum, happiness:happiness, gold:gold});
+    }
+  if (armyNum < 0){
+    var winner = "Your armys are dead. You do not win.";
+    document.getElementById("finalMessage").innerHTML = winner;
+    stopfunction();
+    socket.emit('send_armyNum', {userId: userId, armyNum: armyNum, happiness:happiness, gold:gold});
+    } //at this point button to save spoils appears
+    }
+
+
+</script>
+</head>
+<body>
+
+<table style="width:100%">
+  <tr>
+    <td>PlayerValues</td>
+    <td>EnemyValues</td>		
+  </tr>
+  <tr>
+    <td>Number of soldiers: <p id="ArmyNum">ArmyNum</p></td>
+    <td>Health of enemy: <p id="HP">HP</p></td>		
+  </tr> 
+  <tr>
+    <td>Strength of the army: <p id="ArmyAttack">Attack</p></td>
+    <td>Strength of enemy: <p id="EnemyAttack">Attack</p></td>		
+  </tr>
+</table>
+
+
+<p id="finalMessage">Who will win?</p>
+
+<p id="final"></p>
+                                                                                                     
+<section id="users_zone">
+            
+</section>                                                                                                                                                                                                                                                                                                                                                                                                          
+                                                                                                     
+                                                                                                     
+                                                                                                     
+                                                                                                      
+</body>
+</html>

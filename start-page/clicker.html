@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<style>
+table,th,td
+{
+border:2px solid black;
+border-collapse:collapse;
+}
+</style>
+<body>
+
+<h1>My First JavaScript :)</h1>
+<p id="tempo" >Time</p>
+<table space= 4 style="width:1200px">
+<tr>
+    <td width=300 align = 'center'>Resources<td width=600 align = 'center'>Map<td width=300 align = 'center'>Developments
+</tr>
+<tr>
+    <td>
+    <table space= 1 align = 'center'>
+    <tr>
+        <td width=150 align = 'center'>sheep
+        <td width=150 align = 'center'><p id="sheep"></p>
+    </tr>
+    <tr>
+        <td align = 'center'>wheat
+        <td align = 'center'><p id="wheat"></p>
+    </tr>
+    <tr>
+        <td align = 'center'>ore
+        <td align = 'center'><p id="ore"></p>
+    </tr>
+    <tr>
+        <td align = 'center'>stone
+        <td align = 'center'><p id="stone"></p>
+    </tr>
+    <tr>
+        <td align = 'center'>wood
+        <td align = 'center'><p id="wood"></p>
+    </tr>
+    <tr>
+        <td align = 'center'>people
+        <td align = 'center'><p id="people"></p>
+    </tr>
+    </table>
+    </td>
+    <td align = 'center' id = 'map'>MAP #################################MAP <br>MAP #################################MAP</td>
+    <td align = 'center'>Developers table</td>
+</tr>
+<tr>
+    <td align = 'center'>
+    <button type="sheep" onclick="Collect()">Collect</button>
+    <p id="farm"></p>
+    <script>
+    var sheep;
+    var wheat;
+    var ore;
+    var stone;
+    var wood;
+    var people;
+    sheep = 0;
+    wheat = 0;
+    ore = 0;
+    stone = 0;
+    wood = 0;
+    people = 1;
+
+    document.getElementById("sheep").innerHTML = sheep;
+    document.getElementById("wheat").innerHTML = wheat;
+    document.getElementById("ore").innerHTML = ore;
+    document.getElementById("stone").innerHTML = stone;
+    document.getElementById("wood").innerHTML = wood;
+    document.getElementById("people").innerHTML = people;
+    function Collect()
+    {
+    var r;
+    var s;
+    s= Math.random()
+    r= Math.floor(Math.random() * 5)
+    if (r==0){
+        if (s > 0.5){
+            sheep+=1
+            document.getElementById("sheep").innerHTML = sheep;
+            document.getElementById("random").innerHTML = 'You go to the meadow and you find a lovely sheep';
+            }
+        else{
+            document.getElementById("random").innerHTML = 'You chase after a sheep but she is too fast for you. Better luck next time!';
+            }
+        }
+    if (r==1){
+        wheat+=1
+        document.getElementById("wheat").innerHTML = wheat;
+        document.getElementById("random").innerHTML = 'You collect some wheat from the nearest farm';
+        }
+    if (r==2){
+        if (s > 0.5){
+            ore+=1
+            document.getElementById("ore").innerHTML = ore;
+            //add random fail element here for 
+            document.getElementById("random").innerHTML = 'You dig and find some metal ore! Shiny!';
+            }
+        else{
+            document.getElementById("random").innerHTML = 'You pick a spot to dig for ore at but after only finding dirt you give up';
+            }
+        }
+            
+    if (r==3){
+        if (s > 0.1){
+            stone+=1
+            document.getElementById("stone").innerHTML = stone;
+            document.getElementById("random").innerHTML = 'You find a quarry with some stone';
+            }
+        else{
+            document.getElementById("random").innerHTML = 'There are no stones nearby.';
+            }
+        }
+            
+    if (r==4){
+        wood+=1
+        document.getElementById("wood").innerHTML = wood;
+        document.getElementById("random").innerHTML = 'You collect some wood from the nearby forest';
+        }
+
+    if (sheep > 3)
+        {
+        document.getElementById("farm").innerHTML = '<button type="sheep" onclick="CreateVilage()">Create a village</button>';
+        }
+    else
+        {
+        document.getElementById("farm").innerHTML = '';
+        }
+    }
+    function CreateVilage()
+    {
+    people +=1
+    sheep -= 4
+    document.getElementById("people").innerHTML = people;
+    document.getElementById("sheep").innerHTML = sheep;
+    if (sheep > 3)
+        {
+        document.getElementById("farm").innerHTML = '<button type="sheep" onclick="CreateVilage()">Create a village</button>';
+        }
+    else
+        {
+        document.getElementById("farm").innerHTML = '';
+        }
+    speed = 10000/people
+    myVar=setInterval(function(){myTimer()},speed)
+    }
+    function CollectMachine()
+    {
+    var r;
+    r= Math.floor(Math.random() * 5)
+    if (r==0){
+            sheep+=1
+            document.getElementById("sheep").innerHTML = sheep;
+            }
+    if (r==1){
+        wheat+=1
+        document.getElementById("wheat").innerHTML = wheat;
+        }
+    if (r==2){
+            ore+=1
+            document.getElementById("ore").innerHTML = ore;
+        }
+            
+    if (r==3){
+            stone+=1
+            document.getElementById("stone").innerHTML = stone;
+        }
+            
+    if (r==4){
+        wood+=1
+        document.getElementById("wood").innerHTML = wood;
+        }
+    }
+    var speed;
+    speed = 10000/people
+    var myVar=setInterval(function(){myTimer()},speed);
+    var tempo;
+    tempo = 0
+    function myTimer()
+    {
+    CollectMachine();
+    
+    tempo +=1
+    document.getElementById("tempo").innerHTML=tempo;
+    }
+    </script>
+    </td>
+    <td align = 'center'><p id="random" >Number random here</p></td>
+    <td align = 'center'><p>Info of the developments here</p></td>
+</table>
+</body>
+</html> 

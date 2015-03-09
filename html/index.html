@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<script src="/socket.io/socket.io.js"></script>
+<style>
+table,th,td
+{
+border:2px solid black;
+border-collapse:collapse;
+}
+</style>
+<body>
+
+<h1>
+<font face="Impact" size="8">Warring Peoples</font> 
+</h1>
+<h3>
+<p id = "hapiness">:D</p></h3>
+<!--<p id="tempo" >Time</p>-->
+<table class="fixed" style="border:solid black">
+<!--<col width="1200px"/>-->
+<col height="500px"/>
+<tr height=400>
+    <td width=300>
+    <table space= 1 align = 'center' style="border:solid white">
+		<tr>
+			<td width=75 align = 'center' style="border:solid white"><img style="width:55px" src="http://www.abdn.ac.uk/sll/disciplines/english/beowulf/images/family.gif">
+			<td width=75 align = 'center' style="border:solid white"><p id="people"></p>
+			<td width=75 align = 'center' style="border:solid white"><p id="army_pic"></p>
+			<td width=75 align = 'center' style="border:solid white"><p id="army"></p>
+		</tr width=75>
+		<tr>
+			<td width=75 align = 'center' style="border:solid white"><img style="width:50px" src="http://www.esendex.co.uk/blog/wp-content/uploads/2012/08/Sheep.jpg">
+			<td width=75 align = 'center' style="border:solid white"><p id="sheep"></p>
+			<td align = 'center' style="border:solid white"><img style="width:75px" src="http://thegreendivas.wpengine.netdna-cdn.com/wp-content/uploads/2013/08/wheat-stalk.jpg">
+			<td align = 'center' style="border:solid white"><p id="wheat"></p>
+		</tr>
+		<tr width=75>
+			<td align = 'center' style="border:solid white"><img style="width:75px" src="http://www.crugroup.com/14716/15427/36484/ironore_LTO-309x194.jpg">
+			<td align = 'center' style="border:solid white"><p id="iron"></p>
+			<td align = 'center' style="border:solid white"><img style="width:75px" src="http://www.retailstone.co.uk/images-medium/feature-stones-boulders_gabbro.png">
+			<td align = 'center' style="border:solid white"><p id="stone"></p>
+		</tr>
+		<tr width=75>
+			<td align = 'center' style="border:solid white"><img style="width:75px" src="http://www.qualitylogs.com/wp-content/uploads/hardwood-fire-wood-300x198.jpg">
+			<td align = 'center' style="border:solid white"><p id="wood"></p>
+			<td align = 'center' style="border:solid white"><img style="width:75px" src="">
+			<td align = 'center' style="border:solid white"><p id="blank"></p>
+		</tr>
+		<tr width=75>
+			<td align = 'center' style="border:solid white"> <p id="horse_pic"></p>
+			<td align = 'center' style="border:solid white"><p id="horses"></p>
+			<td align = 'center' style="border:solid white"><p id="gold_pic"></p>
+			<td align = 'center' style="border:solid white"><p id="gold"></p>
+		</tr>
+    </table>
+    </td>
+    <td width=500 align = 'center' id = 'map'>MAP #################################MAP <br>MAP #################################MAP</td>
+    <td align = 'center' width=520>
+		<p id="IMG"><img src="http://localhost:8080/Up-0.PNG" width="500" height="300" onClick='Evolution()'></p>
+	</td>
+</tr>
+<tr>
+    <td align = 'center'>
+    <form action="/I5/fight" method="post" id="fight_form">
+        <input type="submit" id="fight" value="Fight" />
+    </form>
+    <button id="save" onclick="Save()">Save</button>
+    <button type="sheep" onclick="Collect()">Collect</button>
+    <p id="Village"></p>
+	<p id="Town"></p>
+	<p id="City"></p>
+	<p id="Army-Button"></p>
+    <script>
+	var sheep;
+	var developments;
+    var wheat;
+    var iron;
+    var stone;
+    var wood;
+    var people;
+	var random1;
+	var random2;
+	var random3;
+	var evolutionlvl;
+	var numberVillage;
+	var numberTown;
+	var numberCity;
+	var gold;
+	var horses;
+	var army;
+	var hapiness;
+	hapiness = 100;
+	army =0;
+	horses = 0;
+	numberVillage =0
+	numberTown =0
+	numberCity =0
+	evolutionlvl =0
+    sheep = 0;
+    wheat = 0;
+    iron = 0;
+    stone = 0;
+    wood = 0;
+	gold=0;
+    people = 800;
+	random1=" ";
+	random2=" ";
+	random3=" ";
+    var socket = io.connect('http://178.62.18.106:8080');
+    var userId = 0;
+    socket.on('userId_data', function(data) {
+        userId = data;
+        socket.emit('ask_resource_data', userId);
+    });
+    
+    socket.on('resource_data', function(data) {
+        if (typeof(data) != "undefined") {
+            wood = data.wood;
+            veg = data.veg;
+            meat = data.meat;
+            stone = data.stone;
+            iron = data.iron;
+            gold = data.gold;
+            people = data.people;
+            horses = data.horses;
+            sheep = data.sheep;
+            army = data.army;
+            happiness = data.happiness;
+            wars = data.wars;
+            developments = data.developments;
+            wheat = data.wheat;
+            document.getElementById("sheep").innerHTML = sheep;
+            document.getElementById("wheat").innerHTML = wheat;
+            document.getElementById("iron").innerHTML = iron;
+            document.getElementById("stone").innerHTML = stone;
+            document.getElementById("wood").innerHTML = wood;
+            document.getElementById("people").innerHTML = people;
+            document.getElementById("random1").innerHTML = random1;
+            document.getElementById("random2").innerHTML = random2;
+            document.getElementById("random3").innerHTML = random3;
+            
+        } else {
+            developments = 0;
+            army = 0;
+            wars = 0;
+            happiness = 0;
+            meat = 0;
+            veg = 0;
+            horses = 0;
+             sheep = 400;
+            wheat = 400;
+            iron = 400;
+            stone = 400;
+            wood = 400;
+            gold=0;
+            people = 44001;
+            document.getElementById("sheep").innerHTML = sheep;
+            document.getElementById("wheat").innerHTML = wheat;
+            document.getElementById("iron").innerHTML = iron;
+            document.getElementById("stone").innerHTML = stone;
+            document.getElementById("wood").innerHTML = wood;
+            document.getElementById("people").innerHTML = people;
+            document.getElementById("random1").innerHTML = random1;
+            document.getElementById("random2").innerHTML = random2;
+            document.getElementById("random3").innerHTML = random3;
+        }
+        
+    });
+	//development in proces
+	function Evolution()
+	{
+		//prices
+		if (evolutionlvl == 0 && wood >= 20){
+		wood-=20
+		evolutionlvl+=1}
+		if (evolutionlvl == 1 && wood >= 30 && sheep >=15){
+		wood-=40
+		sheep-=15
+		evolutionlvl+=1}
+		if (evolutionlvl == 2 && iron >= 40 && stone >=70){
+		iron-=40
+		stone-=70
+		evolutionlvl+=1}
+		if (evolutionlvl == 3 && wood >= 240 && iron >=160){
+		iron-=160
+		wood-=240
+		evolutionlvl+=1}
+		if (evolutionlvl == 4 && stone >= 450 && iron >=350){
+		iron-=160
+		stone-=450
+		evolutionlvl+=1}
+		if (evolutionlvl == 5 && gold >= 100 && iron >=600){
+		gold-=100
+		iron-=600
+		evolutionlvl+=1}
+		//if (evolutionlvl == 6 && wood >= 30 && sheep >=15){
+		//wood-=40
+		//sheep-=15
+		//evolutionlvl+=1}
+		//display	
+		if (evolutionlvl == 1){
+			IMG = '<img src="/var/www/new/Up-1.PNG" width="500" height="300" onClick="Evolution()">;'
+			document.getElementById("IMG").innerHTML = IMG;
+			document.getElementById("DevInfo").innerHTML = 'Build better housing (wood 30 sheep 15)<br>Increases happines';
+			}
+		if (evolutionlvl == 2){
+			IMG = '<img src="Up-2.PNG" width="500" height="300" onClick="Evolution()">;'
+			document.getElementById("IMG").innerHTML = IMG;
+			document.getElementById("DevInfo").innerHTML = 'Get a mine (iron 40 stone 70)<br>Increases iron collect efficiency +40%';
+			}
+		if (evolutionlvl == 3){
+			IMG = '<img src="Up-3.PNG" width="500" height="300" onClick="Evolution()">;'
+			document.getElementById("IMG").innerHTML = IMG;
+			document.getElementById("DevInfo").innerHTML = 'Mine upgrade (iron 160 wood 240)<br>Iron efficiency +20% and gold efficiency +10%';
+			}
+		if (evolutionlvl == 4){
+			IMG = '<img src="Up-4.PNG" width="500" height="300" onClick="Evolution()">;'
+			document.getElementById("IMG").innerHTML = IMG;
+			document.getElementById("DevInfo").innerHTML = 'Housing upgrade (iron 350 stone 450)<br>Increase happiness';
+			}
+		if (evolutionlvl == 5){
+			IMG = '<img src="Up-5.PNG" width="500" height="300" onClick="Evolution()">;'
+			document.getElementById("IMG").innerHTML = IMG;
+			document.getElementById("DevInfo").innerHTML = 'Military power (iron 600 gold 100)<br>Allows the creation of an army';
+			}
+		if (evolutionlvl == 6){
+			IMG = '<img src="Up-6.PNG" width="500" height="300" onClick="Evolution()">;'
+			document.getElementById("IMG").innerHTML = IMG;
+			}
+	ButtonAppear()
+	document.getElementById("sheep").innerHTML = sheep;
+	document.getElementById("wood").innerHTML = wood;
+	document.getElementById("iron").innerHTML = iron;
+	document.getElementById("stone").innerHTML = stone;
+	document.getElementById("gold").innerHTML = gold;
+	}
+	
+	function Save() {
+	   // Connexion à socket.io
+        
+		var message = {userId:userId, wood:wood, veg:veg, meat:meat, stone:stone, iron:iron, gold:gold, people:people, horses:horses, sheep:sheep, army:army, happiness:happiness, wars:wars, developments:developments, wheat:wheat};
+		socket.emit('message', message); 
+	}
+	
+
+    function Collect()
+    {
+    var r;
+    var s;
+    s= Math.random()
+    r= Math.floor(Math.random() * 5)
+	random3=random2
+	document.getElementById("random3").innerHTML = random3;
+	random2=random1
+	document.getElementById("random2").innerHTML = random2;
+	if (r==0){
+		if (evolutionlvl>=1){extrasheep=0.3}else{extrasheep=0}
+        if (s < (0.4-extrasheep)){
+            sheep+=1+Math.floor(1*people/100)
+            document.getElementById("sheep").innerHTML = sheep;
+			random1='You go to the meadow and you find a lovely sheep';
+            document.getElementById("random1").innerHTML = random1;
+			}
+        else{
+			random1='You chase after a sheep but she is too fast for you. Better luck next time!';
+            document.getElementById("random1").innerHTML = random1; 
+			}
+		if (s > 0.98 && evolutionlvl >= 6) {
+			horses+=1+Math.floor(1*people/100)
+			document.getElementById("horses").innerHTML = horses;
+			random1='Such a pretty pony!';
+		}
+	}
+	//reveals image
+	if (horses > 0) {
+		horse_pic = '<img src ="http://i.istockimg.com/file_thumbview_approve/14811304/3/stock-photo-14811304-bay-horse-isolated-on-white-background.jpg" style="width:75px">';
+		document.getElementById("horse_pic").innerHTML = horse_pic;
+	}
+	if (gold > 0) {
+		gold_pic = '<img src ="http://thomaszinsavage.com/wp-content/uploads/2014/04/gold-bullion.jpg" style="width:75px">';
+		document.getElementById("gold_pic").innerHTML = gold_pic;
+	} 
+	if (army > 0) {
+		army_pic = '<img src ="http://s249959798.websitehome.co.uk/page1/page25/page29/files/page29_1.jpg" style="width:48px">';
+		document.getElementById("Army_pic").innerHTML = army_pic;
+	}
+	//reveals image
+    if (r==1){
+        wheat+=2+Math.floor(1*people/100)
+        document.getElementById("wheat").innerHTML = wheat;
+		random1='You collect some wheat from the nearest farm';
+        document.getElementById("random1").innerHTML = random1;
+    }
+    if (r==2){
+		if (evolutionlvl>=3){extrairon=0.4}else{extrairon=0}
+		if (evolutionlvl>=4){extragold=0.1}else{extragold=0}
+        if (s > (0.4-extrairon-extragold*2)){
+            iron+=1+Math.floor(1*people/100)
+            document.getElementById("iron").innerHTML = iron;
+            //add random fail element here for 
+			random1='You dig and find some metal ore! Shiny...';
+            document.getElementById("random1").innerHTML = random1;
+            }
+        else{
+			random1='You pick a spot to dig for ore at but after only finding dirt you give up';
+            document.getElementById("random1").innerHTML = random1;
+			}
+		if (s > (0.99-extragold) && evolutionlvl >= 4) {
+			gold+=1+Math.floor(1*people/100);
+			document.getElementById("gold").innerHTML = gold;
+			random1='GOLD! gold...';
+			document.getElementById("random1").innerHTML = random1;
+		}
+    }
+    if (r==3){
+        if (s > 0.1){
+            stone+=2+Math.floor(1*people/100)
+            document.getElementById("stone").innerHTML = stone;
+			random1='You find a quarry with some stone';
+            document.getElementById("random1").innerHTML = random1;
+            }
+        else{
+			random1='There are no stones nearby.';
+            document.getElementById("random1").innerHTML = random1;
+            }
+    }
+    if (r==4){
+        wood+=2+Math.floor(1*people/100)
+        document.getElementById("wood").innerHTML = wood;
+		random1 = 'You collect some wood from the nearby forest';
+        document.getElementById("random1").innerHTML = random1;
+    }
+	//if (evolutionlvl >= 7) {
+		//army+=1;
+		//document.getElementById("army").innerHTML = army;
+		//random1 = 'Your loyal generals await orders...';
+        //document.getElementById("random1").innerHTML = random1;
+	//}
+
+	//buttons appear 
+	ButtonAppear()
+    }
+    function ButtonAppear()
+    {
+	if (wheat >= 10*(numberVillage+1) && stone >= 10*(numberVillage+1) && wood >= 10*(numberVillage+1))
+        {        document.getElementById("Village").innerHTML = '<button type="sheep" onclick="CreateVilage()">Create a Village('+numberVillage+')</button>';        }
+    else
+        {        document.getElementById("Village").innerHTML = '';        }
+	if (sheep >= 40*(numberTown+1) && stone >= 50*(numberTown+1) && wood >= 50*(numberTown+1))
+        {        document.getElementById("Town").innerHTML = '<button type="sheep" onclick="CreateTown()">Create a Town('+numberTown+')</button>';        }
+    else
+        {        document.getElementById("Town").innerHTML = '';        }
+	if (iron >= 80*(numberCity+1) && stone >= 230*(numberCity+1) && wood >= 140*(numberCity+1))
+        {        document.getElementById("City").innerHTML = '<button type="iron" onclick="CreateCity()">Create a City('+numberCity+')</button>';        }
+    else
+        {        document.getElementById("City").innerHTML = '';        }
+	if (sheep >= 40 && wheat >= 80 && evolutionlvl >= 6)
+        {        document.getElementById("Army-Button").innerHTML = '<button onclick="CreateArmy()">Create a Army unit</button>';        }
+    else
+        {        document.getElementById("Army-Button").innerHTML = '';        }
+	
+	hapiness =100-(people/(20*evolutionlvl*evolutionlvl+10))
+	document.getElementById("hapiness").innerHTML = hapiness
+	if (hapiness > 80)
+		{document.getElementById("hapiness").innerHTML = ":D" ;}
+	else if(hapiness > 60 && hapiness <= 80 )
+		{document.getElementById("hapiness").innerHTML = ":)"
+		;}
+	else if(hapiness > 40 && hapiness <= 60 )
+		{document.getElementById("hapiness").innerHTML = ":|"
+		;}
+	else if(hapiness > 20 && hapiness <= 40 )
+		{document.getElementById("hapiness").innerHTML = ":("
+		;}
+	else if(hapiness > 0 && hapiness <= 20 )
+		{document.getElementById("hapiness").innerHTML = ">.<"
+		;}
+	}
+	//Village function
+    function CreateVilage()
+    {
+    people +=10
+    wheat -= 10*(numberVillage+1)
+	stone -= 10*(numberVillage+1)
+	wood -=10*(numberVillage+1)
+	numberVillage+=1
+    document.getElementById("people").innerHTML = people;
+    document.getElementById("wheat").innerHTML = wheat;
+    document.getElementById("stone").innerHTML = stone;
+    document.getElementById("wood").innerHTML = wood;
+    speed = 100000/people
+	ButtonAppear()
+    myVar=setInterval(function(){myTimer()},speed)
+    }
+	//Town function
+    function CreateTown()
+    {
+    people +=50
+    sheep -= 40*(numberTown+1)
+	stone -= 50*(numberTown+1)
+	wood -=50*(numberTown+1)
+	numberTown+=1
+    document.getElementById("people").innerHTML = people;
+    document.getElementById("sheep").innerHTML = sheep;
+    document.getElementById("stone").innerHTML = stone;
+    document.getElementById("wood").innerHTML = wood;
+    speed = 100000/people
+	ButtonAppear()
+    myVar=setInterval(function(){myTimer()},speed)
+    }
+	//City function
+    function CreateCity()
+    {
+    people +=200
+    iron -= 80*(numberCity+1)
+	stone -= 230*(numberCity+1)
+	gold -=3*(numberCity+1)
+	numberCity+=1
+    document.getElementById("people").innerHTML = people;
+    document.getElementById("iron").innerHTML = iron;
+    document.getElementById("stone").innerHTML = stone;
+    document.getElementById("wood").innerHTML = wood;
+    speed = 100000/people
+	ButtonAppear()
+    myVar=setInterval(function(){myTimer()},speed)
+    }
+	//Army function
+    function CreateArmy()
+    {
+    army +=1
+	sheep -= 40
+	wheat -= 80
+    document.getElementById("army").innerHTML = army;
+    document.getElementById("sheep").innerHTML = sheep;
+    document.getElementById("wheat").innerHTML = wheat;
+	ButtonAppear()
+    myVar=setInterval(function(){myTimer()},speed)
+    }
+	//Collect machine
+    function CollectMachine()
+    {
+    var r;
+    var s;
+	var f;
+    s= Math.random()
+    r= Math.floor(Math.random() * 5)
+	f= Math.floor(Math.random() * 2)
+	if (s > 0.999) {
+		if (f==0) {
+			people = Math.floor(people/2)
+			document.getElementById("people").innerHTML = people;
+			random1='Your population has attempted revolution! Lose half your population!';
+			document.getElementById("random1").innerHTML = random1;
+		}
+		if (f==1) {
+			wheat = Math.floor(wheat/2)
+			document.getElementById("wheat").innerHTML = wheat;
+			random1='Famine and pestillence spreads across the land! ...';
+			document.getElementById("random1").innerHTML = random1;
+		}
+	}
+	//reveals image
+	if (horses > 0) {
+		horse_pic = '<img src ="http://i.istockimg.com/file_thumbview_approve/14811304/3/stock-photo-14811304-bay-horse-isolated-on-white-background.jpg" style="width:75px">';
+		document.getElementById("horse_pic").innerHTML = horse_pic;
+	}
+	if (gold > 0) {
+		gold_pic = '<img src ="http://thomaszinsavage.com/wp-content/uploads/2014/04/gold-bullion.jpg" style="width:75px">';
+		document.getElementById("gold_pic").innerHTML = gold_pic;
+	} 
+	if (army > 0) {
+		army_pic = '<img src ="http://s249959798.websitehome.co.uk/page1/page25/page29/files/page29_1.jpg" style="width:48px">';
+		document.getElementById("army_pic").innerHTML = army_pic;
+	}
+	//reveals image
+	if (r==0){
+        if (s < 0.4){
+            sheep+=1
+            document.getElementById("sheep").innerHTML = sheep;
+			}
+		if (s > 0.98 && evolutionlvl >= 6) {
+			horses+=1
+			document.getElementById("horses").innerHTML = horses;
+		}
+	}
+    if (r==1){
+        wheat+=1
+        document.getElementById("wheat").innerHTML = wheat;
+    }
+    if (r==2){
+        if (s > 0.5){
+            iron+=1
+            document.getElementById("iron").innerHTML = iron;
+			}
+		if (s > 0.99 && evolutionlvl >= 4) {
+			gold+=1;
+			document.getElementById("gold").innerHTML = gold;
+		}
+    }
+    if (r==3){
+        if (s > 0.1){
+            stone+=1
+            document.getElementById("stone").innerHTML = stone;
+            }
+    }
+    if (r==4){
+        wood+=1
+        document.getElementById("wood").innerHTML = wood;
+    }
+    }
+var speed;
+    speed = 100000/people
+    var myVar=setInterval(function(){myTimer()},speed);
+    var tempo;
+    tempo = 0
+    function myTimer()
+    {
+    CollectMachine();
+    tempo +=1
+    document.getElementById("tempo").innerHTML=tempo;
+    }
+    </script>
+    </td>
+    <td align = 'center'><p style="color:#E0E0E0" id="random3" > </p>
+						 <p style="color:#A0A0A0" id="random2" > </p>
+						 <p style="color:black" id="random1" > </p>
+		</td>
+    <td align = 'center'><p id="DevInfo">Put a fence in you life (20 wood)<br> Increases sheep rate collection +30%</p></td>
+</table>
+</body>
+</html> 

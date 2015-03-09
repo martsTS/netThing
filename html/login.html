@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Imperial Battles</title>
+        <style>
+            #zone_chat strong {
+                color: white;
+                background-color: black;
+                padding: 2px;
+            }
+        </style>
+    </head>
+ 
+    <body>
+        <h1>Imperial Battles</h1>
+
+        <form action="/login" method="post" id="login_form">
+            <label>Username:</label>
+            <input type="text" name="login" id="login" placeholder="Username" size="30" autofocus />
+            <label>Password:</label>
+            <input type="text" name="pwd" id="pwd" placeholder="Password" size="30" autofocus />
+            <input type="submit" id="send_msg" value="Submit" />
+        </form>
+
+
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+
+            // Connexion à socket.io
+            // var socket = io.connect('http://178.62.18.106:8080');
+
+            // Lorsqu'on envoie le formulaire, on transmet le message et on l'affiche sur la page
+            // $('#login_form').submit(function () {
+            //     var loginInfo = {login: $('#login').val(), password: $('#login').val()};
+            //     socket.emit('message', loginInfo); // send the login info to the server
+            //     return false; // Permet de bloquer l'envoi "classique" du formulaire
+            // });
+        </script>
+    </body>
+</html>
